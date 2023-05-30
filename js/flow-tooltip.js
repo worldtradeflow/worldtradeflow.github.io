@@ -90,7 +90,19 @@ class FlowTooltip {
   show(d) {
     this.outboundName.text(d.source.name);
     this.inboundName.text(d.target.name);
-    this.value.text(d3.format(",")(d.value));
+    
+    // this.value.text(d3.format(",")(d.value));
+    // this.value.text(d3.format(".3s")(d.value));
+    // this.value.text( d3.format(",")((d.value / 1e6).toFixed(0)) + 'M');
+
+    if (d.value >= 1e9) {
+      this.value.text( d3.format(",")((d.value / 1e9).toFixed(1)) + ' B');
+    } else if (d.value >= 1e6) {
+      this.value.text( d3.format(",")((d.value / 1e6).toFixed(1)) + ' M');
+    } else {
+      this.value.text( d3.format(",")((d.value / 1e3).toFixed(1)) + ' K');
+    }
+    
     this.outboundPie.onValueChange(d.value / d.source.outboundsTotal);
     this.inboundPie.onValueChange(d.value / d.target.inboundsTotal);
 

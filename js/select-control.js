@@ -15,6 +15,14 @@ class SelectControl {
       .attr("class", "col-form-label col-form-label-sm")
       .attr("for", this.id)
       .text(this.label);
+    
+    
+    // shown label by text order
+    this.options.sort((a, b) => {
+      return (a.text > b.text) ? 1 : -1;
+    });
+    // console.log('this.options in selection-control:\n', ops);
+
     this.container
       .append("select")
       .attr("class", "form-select form-select-sm")

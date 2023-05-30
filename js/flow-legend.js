@@ -16,7 +16,8 @@ class FlowLegend {
       bottom: 16,
       left: 1,
     };
-    this.width = 160;
+    // this.width = 160;
+    this.width = 130;
     this.rowHeight = 24;
     this.height =
       this.rowHeight * this.flowValues.length +
@@ -114,7 +115,8 @@ class FlowLegend {
       .append("text")
       .attr("x", this.width - this.margin.right + 4)
       .attr("dy", "0.32em")
-      .text((d) => d3.format(",")(d));
+      // .text((d) => d3.format(",")(d));
+      .text((d) => d3.format(",")(d/1e9) + 'B');
   }
 
   flowPath(d) {

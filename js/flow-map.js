@@ -107,11 +107,30 @@ class FlowMap {
   }
 
   updateData() {
+    
     this.locations.forEach((d) => {
       [d.x, d.y] = this.path.centroid(d.feature);
+      
+      // let regions = ['USA', 'AUS'];   
+      // amend label geo-location for some regions
+      if (d.abbr == 'AUS') {
+        d.x += 20;
+        d.y += 50;
+      } else if (d.abbr == 'USA') {
+        d.x += 12;
+        d.y += 15;
+      } else if (d.abbr == 'CAN') {
+        d.x -= 25;
+      } else if (d.abbr == 'MAC') {
+        d.x += 7;
+        d.y += 8;
+      }
+
     });
 
     const location = this.locationById.get(this.location);
+
+    console.log('location:\n', location);
 
     // let flows = [];
     // if (this.direction === "both") {
@@ -163,6 +182,11 @@ class FlowMap {
     // } else if (this.display === "top5") {
     //   flows = flows.slice(0, 5);
     // }
+
+    // // filter flows which have no geo-info in mapdata
+    // flows.filter((d) => {
+    //   return d;
+    // })
 
     console.log('flows:\n', flows)
     
@@ -245,6 +269,8 @@ class FlowMap {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
         const angle = Math.round((Math.atan2(dy, dx) * 180) / Math.PI);
+        // const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+        // console.log('angle:\n', angle, dx, dy, d);
         return `rotate(${angle}, 0.5, 0.5)`;
       })
       .selectAll("stop")
@@ -396,7 +422,7 @@ class FlowMap {
         enter.append("path").attr("class", "locations-features-path")
         // .attr('fill', 'red')
       )
-      .filter( function (d) {
+      .filter( (d) => {
         return d.properties.name !== 'Antarctica';    // filter Antarctica
       })
       .attr("d", this.path)    // fill is also enabled now
